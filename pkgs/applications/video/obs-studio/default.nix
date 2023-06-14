@@ -65,6 +65,7 @@ stdenv.mkDerivation rec {
     # Lets obs-browser build against CEF 90.1.0+
     ./Enable-file-access-and-universal-access-for-file-URL.patch
     ./Provide-runtime-plugin-destination-as-relative-path.patch
+    ./webrtc.patch
   ];
 
   nativeBuildInputs = [
