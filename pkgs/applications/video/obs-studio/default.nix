@@ -51,10 +51,10 @@ in
 stdenv.mkDerivation rec {
   pname = "obs-studio";
   version = "29.0.3";
-  commitRef = "9b5ce9fcece4b9545cad2f9954e1d8d24fa50b80";
+  commitRef = "patch-webrtc-on";
 
   src = fetchFromGitHub {
-    owner = "obsproject";
+    owner = "videl";
     repo = "obs-studio";
     rev = commitRef;
     sha256 = "sha256-TIUSjyPEsKRNTSLQXuLJGEgD989hJ5GhOsqJ4nkKVsY=";
@@ -65,7 +65,6 @@ stdenv.mkDerivation rec {
     # Lets obs-browser build against CEF 90.1.0+
     ./Enable-file-access-and-universal-access-for-file-URL.patch
     ./Provide-runtime-plugin-destination-as-relative-path.patch
-    ./webrtc.patch
   ];
 
   nativeBuildInputs = [
