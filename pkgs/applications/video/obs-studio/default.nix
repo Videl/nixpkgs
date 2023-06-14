@@ -50,7 +50,7 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "obs-studio";
-  version = "29.0.2";
+  version = "9b5ce9fcece4b9545cad2f9954e1d8d24fa50b80";
 
   src = fetchFromGitHub {
     owner = "obsproject";
