@@ -6,13 +6,15 @@
   nodejs,
   pnpm_10,
   python3,
+  go,
   testers,
   xcbuild,
   nixosTests,
   nix-update-script,
   yq-go,
+  gnupg,
+  corepack,
 }:
-
 stdenv.mkDerivation (finalAttrs: {
   pname = "renovate";
   version = "41.21.3";
@@ -35,7 +37,15 @@ stdenv.mkDerivation (finalAttrs: {
     pnpm_10.configHook
     python3
     yq-go
+    go
+    corepack
   ] ++ lib.optional stdenv.hostPlatform.isDarwin xcbuild;
+
+  # Add runtime dependencies
+  buildInputs = [
+    gnupg
+    pnpm_10
+  ];
 
   pnpmDeps = pnpm_10.fetchDeps {
     inherit (finalAttrs) pname version src;
@@ -81,9 +91,22 @@ stdenv.mkDerivation (finalAttrs: {
     cp -r dist node_modules package.json renovate-schema.json $out/lib/node_modules/renovate
 
     makeWrapper "${lib.getExe nodejs}" "$out/bin/renovate" \
-      --add-flags "$out/lib/node_modules/renovate/dist/renovate.js"
+      --add-flags "$out/lib/node_modules/renovate/dist/renovate.js" \
+      --prefix PATH : "${
+        lib.makeBinPath [
+          gnupg
+          pnpm_10
+        ]
+      }"
+
     makeWrapper "${lib.getExe nodejs}" "$out/bin/renovate-config-validator" \
-      --add-flags "$out/lib/node_modules/renovate/dist/config-validator.js"
+      --add-flags "$out/lib/node_modules/renovate/dist/config-validator.js" \
+      --prefix PATH : "${
+        lib.makeBinPath [
+          gnupg
+          pnpm_10
+        ]
+      }"
 
     runHook postInstall
   '';
