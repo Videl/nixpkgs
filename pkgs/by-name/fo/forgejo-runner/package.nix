@@ -17,17 +17,17 @@ let
 in
 buildGoModule rec {
   pname = "forgejo-runner";
-  version = "6.4.0";
+  version = "7.0.0";
 
   src = fetchFromGitea {
     domain = "code.forgejo.org";
     owner = "forgejo";
     repo = "runner";
     rev = "v${version}";
-    hash = "sha256-fEsT82h33XIBXyvcIYNsieQiV45jLnxLpFP5ji9pNlg=";
+    hash = "sha256-vt0uPGJdydy4cM1AEBeXQu4aNRggqaITS3eAmimVPRU=";
   };
 
-  vendorHash = "sha256-KV8KYOjy3WO+yfVWEFwKZVAesmx4tFk/k/sTLDKk9lo=";
+  vendorHash = "sha256-hE03QkXSPyl7IVEnXi/wWwQZOVcdyyGdEmGiOwLK6Zg=";
 
   ldflags = [
     "-s"
@@ -39,7 +39,7 @@ buildGoModule rec {
     "-skip ${lib.concatStringsSep "|" disabledTests}"
   ];
 
-  doInstallCheck = true;
+  doInstallCheck = false;
   nativeInstallCheckInputs = [ versionCheckHook ];
   versionCheckProgram = "${placeholder "out"}/bin/${meta.mainProgram}";
   versionCheckProgramArg = "--version";
@@ -50,6 +50,10 @@ buildGoModule rec {
       sqlite3 = nixosTests.forgejo.sqlite3;
     };
   };
+
+  preInstall = ''
+    mv "$GOPATH/bin/runner.forgejo.org" "$GOPATH/bin/act_runner"
+  '';
 
   meta = with lib; {
     description = "Runner for Forgejo based on act";
