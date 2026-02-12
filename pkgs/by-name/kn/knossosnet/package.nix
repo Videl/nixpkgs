@@ -31,6 +31,10 @@ buildDotnetModule rec {
 
   runtimeDeps = [ openal ];
 
+  env = {
+    AVALONIA_TELEMETRY_OPTOUT = "1";
+  };
+
   nativeBuildInputs = [ copyDesktopItems ];
 
   desktopItems = [
