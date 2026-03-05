@@ -9917,6 +9917,10 @@ self: super: with self; {
 
   mkdocs-callouts = callPackage ../development/python-modules/mkdocs-callouts { };
 
+  mkdocs-custom-tags-attributes =
+    callPackage ../development/python-modules/mkdocs-custom-tags-attributes
+      { };
+
   mkdocs-drawio-exporter = callPackage ../development/python-modules/mkdocs-drawio-exporter { };
 
   mkdocs-drawio-file = callPackage ../development/python-modules/mkdocs-drawio-file { };
