@@ -5,6 +5,11 @@
   openssl,
   ixwebsocket,
   curl,
+  makeWrapper,
+  llama-cpp-vulkan,
+  llama-cpp-rocm,
+  llama-cpp,
+  whisper-cpp,
   ninja,
   zstd,
   pkg-config,
@@ -66,9 +71,8 @@ stdenv.mkDerivation (finalAttrs: {
     nlohmann_json
     curl
     cli11
+    makeWrapper
     zstd
-    # httplib
-    # httplib-local
     pkg-config
     ninja
     ixwebsocket
@@ -104,6 +108,13 @@ stdenv.mkDerivation (finalAttrs: {
     cp -r $src/src/cpp/resources/* $out/bin/resources
     chmod -R +w $out/bin/resources/
     cp -r ${web-app}/resources/web-app/* $out/bin/resources/web-app/
+
+    wrapProgram $out/bin/lemonade-router \
+      --set LEMONADE_LLAMACPP_VULKAN_BIN "${llama-cpp-vulkan}/bin/llama-server" \
+      --set LEMONADE_LLAMACPP_ROCM_BIN "${llama-cpp-rocm}/bin/llama-server" \
+      --set LEMONADE_LLAMACPP_CPU_BIN "${llama-cpp}/bin/llama-server" \
+      --set LEMONADE_WHISPERCPP_CPU_BIN "${whisper-cpp}/bin/whisper-cpp-server" \
+      --set LEMONADE_WHISPERCPP_VULKAN_BIN "${whisper-cpp.override { cudaSupport = false; }}/bin/whisper-cpp-server"
   '';
 
   meta = {
