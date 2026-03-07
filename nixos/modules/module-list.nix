@@ -148,6 +148,7 @@
   ./misc/extra-arguments.nix
   ./misc/ids.nix
   ./misc/label.nix
+  ./misc/lemonade-ai.nix
   ./misc/lib.nix
   ./misc/locate.nix
   ./misc/man-db.nix
